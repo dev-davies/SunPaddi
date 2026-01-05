@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SunPaddi</string>
+    <string name="title_activity_main">SunPaddi</string>
+    <string name="package_name">com.sunpaddi.app</string>
+    <string name="custom_url_scheme">com.sunpaddi.app</string>
+</resources>
