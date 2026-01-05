@@ -32,6 +32,32 @@ def update_prices():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/products', methods=['GET'])
+def get_products():
+    # Sort by is_sponsored desc (True first), then name
+    products = Product.query.order_by(Product.is_sponsored.desc(), Product.name.asc()).all()
+    return jsonify([p.to_dict() for p in products])
+
+from flask import request
+@app.route('/api/lead', methods=['POST'])
+def create_lead():
+    data = request.get_json()
+    if not data or not data.get('name') or not data.get('phone'):
+        return jsonify({"error": "Name and Phone are required"}), 400
+    
+    try:
+        new_lead = Lead(
+            name=data['name'],
+            email=data.get('email'),
+            phone=data['phone'],
+            energy_needs=data.get('energy_needs')
+        )
+        db.session.add(new_lead)
+        db.session.commit()
+        return jsonify({"message": "Lead submitted successfully", "id": new_lead.id}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/')
 def home():
     return jsonify({

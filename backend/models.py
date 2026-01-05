@@ -10,6 +10,7 @@ class Product(db.Model):
     specs = db.Column(db.JSON, nullable=True) # generic JSON for varying specs
     price = db.Column(db.Float, nullable=False)
     stock = db.Column(db.Integer, default=0)
+    is_sponsored = db.Column(db.Boolean, default=False)
 
     def to_dict(self):
         return {
@@ -18,7 +19,8 @@ class Product(db.Model):
             'category': self.category,
             'specs': self.specs,
             'price': self.price,
-            'stock': self.stock
+            'stock': self.stock,
+            'is_sponsored': self.is_sponsored
         }
 
 class Appliance(db.Model):
