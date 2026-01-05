@@ -58,6 +58,52 @@ def create_lead():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/calculate', methods=['POST'])
+def calculate_system():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+    
+    total_watts = data.get('totalWatts', 0)
+    night_hours = data.get('nightHours', 8)
+    appliances = data.get('appliances', [])
+    
+    # Calculate energy needed (Wh)
+    energy_wh = total_watts * night_hours
+    
+    # Add 20% buffer for inefficiency
+    energy_with_buffer = energy_wh * 1.2
+    
+    # Battery sizing (assuming 12V 200Ah = 2.4kWh, 50% DoD)
+    battery_kwh = energy_with_buffer / 1000
+    batteries_needed = max(1, int(battery_kwh / 1.2) + 1)  # 1.2kWh usable per battery
+    
+    # Inverter sizing (add 25% headroom)
+    inverter_watts = total_watts * 1.25
+    inverter_kva = round(inverter_watts / 800, 1)  # Rough conversion
+    inverter_kva = max(1.5, inverter_kva)  # Minimum 1.5kVA
+    
+    # Panel sizing (assuming 5 peak sun hours, 550W panels)
+    daily_generation_needed = energy_with_buffer / 1000  # kWh
+    panel_watts_needed = (daily_generation_needed / 5) * 1000 * 1.3  # 30% losses
+    panels_550w = max(1, int(panel_watts_needed / 550) + 1)
+    
+    return jsonify({
+        "success": True,
+        "input": {
+            "totalWatts": total_watts,
+            "nightHours": night_hours,
+            "applianceCount": len([a for a in appliances if a.get('quantity', 0) > 0])
+        },
+        "recommendation": {
+            "inverterKva": inverter_kva,
+            "batteries": batteries_needed,
+            "panels": panels_550w,
+            "batteryKwh": round(battery_kwh, 2),
+            "dailyEnergyKwh": round(energy_with_buffer / 1000, 2)
+        }
+    })
+
 @app.route('/')
 def home():
     return jsonify({

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSizerStore } from '@/stores/sizer'
+import SizingResult from '@/components/SizingResult.vue'
 
 const store = useSizerStore()
 </script>
@@ -86,9 +87,7 @@ const store = useSizerStore()
       </div>
     </div>
 
-    <!-- CTA Button -->
-    <button class="w-full bg-amber-500 text-white font-semibold py-4 rounded-xl hover:bg-amber-600 active:scale-[0.98] transition-all shadow-lg shadow-amber-500/30">
-      Get a Quote
-    </button>
+    <!-- Sizing Result Component -->
+    <SizingResult />
   </div>
 </template>
