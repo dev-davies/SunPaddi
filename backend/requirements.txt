@@ -3,3 +3,4 @@ flask-sqlalchemy
 flask-cors
 beautifulsoup4
 python-dotenv
+requests

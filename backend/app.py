@@ -19,6 +19,19 @@ CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 with app.app_context():
     db.create_all()
 
+@app.route('/api/update-prices', methods=['GET'])
+def update_prices():
+    try:
+        from scraper import run_scraper
+        results = run_scraper()
+        return jsonify({
+            "message": "Prices updated successfully",
+            "count": len(results),
+            "data": results
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/')
 def home():
     return jsonify({
