@@ -9,9 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@capacitor/android": "^8.0.0",
-    "@capacitor/cli": "^8.0.0",
-    "@capacitor/core": "^8.0.0",
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.2",
     "pinia": "^3.0.4",
@@ -22,6 +19,7 @@
   "devDependencies": {
     "@types/node": "^25.0.3",
     "@vitejs/plugin-vue": "^6.0.1",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "vite-plugin-pwa": "^1.2.0"
   }
 }

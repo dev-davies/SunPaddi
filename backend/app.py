@@ -71,7 +71,7 @@ def calculate_system():
     # Calculate energy needed (Wh)
     energy_wh = total_watts * night_hours
     
-    # Add 20% buffer for inefficiency
+    
     energy_with_buffer = energy_wh * 1.2
     
     # Battery sizing (assuming 12V 200Ah = 2.4kWh, 50% DoD)
